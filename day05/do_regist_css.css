@@ -1,0 +1,23 @@
+.output{
+    
+    height: 260px;
+    width: 420px;
+    border: 1px solid rgb(47, 153, 153);
+    margin-left: 30%;
+    margin-top: 3%;
+}
+div{
+    margin: 20px 10px 10px 40px;
+    width: 420px;
+    height: 40px;
+}
+.account-password{
+    margin-right: 80px;
+    padding:10px 5px 0px 5px;
+    background-color:rgb(126, 196, 236);
+    border: 1px solid rgb(47, 153, 153);
+    
+}
+p{
+    padding:15px 5px 0px 5px;
+}

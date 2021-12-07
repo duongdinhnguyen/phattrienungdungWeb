@@ -1,12 +1,9 @@
-
+<?php include "sql_connect.php";?>
 <!DOCTYPE html>
 <html>
-    <?php 
+    <link rel="stylesheet" href="regist_css.css">
     
-    $sql= "SELECT id, value, name FROM gender";
     
-    ?>
-    <link rel="stylesheet" href="regist_css.css"/>
     <?php
     // Khoi tao doi tuong chua data
         class DataInput{
@@ -40,27 +37,27 @@
               }
         }
         $ERROR="";
-        $data= new DataInput();
+        $dataInput= new DataInput();
         // Kiểm tra dữ liệu
         if(isset($_REQUEST["sign_in"])){
            
-             if(empty($_GET["name"])) {
+             if(empty($_POST["name"])) {
                 $ERROR="Hãy nhập tên.";
             }
-            else if(empty($_GET["gioitinh"])){
+            else if(empty($_POST["gioitinh"])){
                 $ERROR="Hãy nhập giới tính.";
             }
-            else if(empty($_GET["phankhoa"])){
+            else if(empty($_POST["phankhoa"])){
                 $ERROR="Hãy nhập phân khoa.";
             }
-            else if(empty($_GET["age"])){
+            else if(empty($_POST["age"])){
                 $ERROR="Hãy nhập năm sinh.";
             }
-            else if($_GET["name"] &&  $_GET["gioitinh"]  &&  $_GET["phankhoa"]  &&  $_GET["age"]){
-                $data->set_name($_GET["name"]);
-                $data ->set_gioitinh($_GET["gioitinh"]);
-                $data ->set_phankhoa($_GET["phankhoa"]);
-                $data->set_age($_GET["age"]);
+            else if($_POST["name"] &&  $_POST["gioitinh"]  &&  $_POST["phankhoa"]  &&  $_POST["age"]){
+                $dataInput->set_name($_POST["name"]);
+                $dataInput ->set_gioitinh($_POST["gioitinh"]);
+                $dataInput ->set_phankhoa($_POST["phankhoa"]);
+                $dataInput->set_age($_POST["age"]);
                 include("do_regist.php"); // thuc hien cac lenh o do_regist
                 exit(); // qua trang moi
            }
@@ -69,8 +66,8 @@
     ?>  
 <head></head>
 <body>
-    
-   <form class="form-login" action="<?php $_PHP_SELF ?>" method = "GET"> <!-- action : ham do_regist là hàm xử lý-->
+
+   <form class="form-login" action="<?php $_PHP_SELF ?>" method = "POST"> <!-- action : ham do_regist là hàm xử lý-->
         
         <p class="error" id="error"><?php  echo $ERROR; ?></p>
     <p>
@@ -81,8 +78,16 @@
         <br/>
     <p>
         <b class="account-password"><?php echo "Giới tính"?></b>
-        <input id ="gioitinh" type="radio" name="gioitinh" value="Nam"> <?php echo "Nam"; ?></input>
-        <input id ="gioitinh"  type="radio" name="gioitinh" value="Nữ"><?php echo "Nữ"; ?></input>
+        <?php 
+            $sql= "SELECT * FROM gender";
+            $data= $conn->prepare($sql);
+            $data->execute();
+            foreach($data as $row){  ?>
+                    <input class="gioitinh" type="radio" name="gioitinh"  value="<?php  print($row['name']);?>"> <?php  print($row['name']);?></input>
+           <?php 
+          }
+        ?>
+        
     </p>
         <br/>
     <p>
@@ -90,8 +95,17 @@
             <div class="select">
                 <select name="phankhoa"> <!-- để name ở đây mới lấy được phankhoa, tại sao thế ạ? -->
                     
-                    <option class="option" name="phankhoa" value="MAT"><?php  echo "MAT";  ?></option>
-                    <option class="option" name="phankhoa" value="KDL"><?php echo "KDL";  ?></option>
+                <?php 
+                $sql= "SELECT * FROM faculty";
+                $data= $conn->prepare($sql);
+                $data->execute();
+                foreach($data as $row){  ?>
+                  
+                    <option class="option" name="phankhoa" ><?php  print($row['value']);?></option>
+                <?php } ?>
+
+                    
+                   
                 </select>
             </div>
     </p>
